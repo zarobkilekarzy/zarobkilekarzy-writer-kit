@@ -68,7 +68,8 @@ W Claude Code skill możesz też wywołać wprost: `/zarobkilekarzy-writer`.
 Poproś agenta: *„Pokaż podgląd”*. Agent uruchomi skrypt podglądu (w Node albo w Pythonie — wystarczy jedno
 z nich, wynik jest ten sam). Skrypt pobiera z zarobkilekarzy.pl
 szablon podglądu z układem artykułu (style i fonty), wstawia w niego Twój tekst i zapisuje obok szkicu plik
-`….podglad.html` do otwarcia w przeglądarce. Luki do uzupełnienia są w nim zaznaczone na żółto.
+`….podglad.html` do otwarcia w przeglądarce. Luki do uzupełnienia są w nim zaznaczone na żółto, a jeśli
+podasz swój profil na X (`authorX`), pod tekstem zobaczysz kartę autora — tak jak na stronie.
 Ręcznie:
 
 ```bash
@@ -85,7 +86,7 @@ plik `.md`.
 ## Podgląd wpisu na X
 
 Poproś agenta: *„Pokaż podgląd wpisu”*. Zobaczysz wpis albo wątek tak, jak na osi czasu X na koncie
-@ZarobkiLekarzy (tryb jasny i ciemny), z licznikiem znaków liczonym jak na X i ostrzeżeniami: za długi wpis,
+@ZarobkiLekarzy (tryb jasny i ciemny), z licznikiem znaków liczonym jak na X i ostrzeżeniami: wpis ponad 280 znaków,
 wykrzyknik, oznaczenie konta, link do źródła we wpisie, liczba bez źródła w podkładce. Źródła wpisu nie
 idą do jego treści, tylko do podkładki (`## Podkładka`), którą podgląd pokazuje osobno. Ręcznie:
 

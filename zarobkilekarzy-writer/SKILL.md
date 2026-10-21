@@ -140,8 +140,10 @@ Linuksie, `start` w Windows). Wymaga internetu; łączy się tylko z zarobkileka
 Inny wzór układu: `--wzor https://zarobkilekarzy.pl/<adres artykułu>/`.
 
 W podglądzie luki (`[ŹRÓDŁO?]`, `[DO SPRAWDZENIA]`, `[PYTANIE]`) są na żółto, przypis bez definicji ma
-czerwoną ramkę, „Propozycje ilustracji” są w ramce, a „Dla redakcji” — w pasku u góry. Komunikaty skryptu
-(brakujące pola, za dużo punktów „W skrócie”) przekaż autorowi. Podgląd odświeżaj po większych zmianach.
+czerwoną ramkę, „Propozycje ilustracji” są w ramce, a „Dla redakcji” — w pasku u góry. Gdy szkic ma pole
+`authorX`, pod treścią pojawia się karta autora z profilem na X (jak na stronie; awatar dodaje redakcja,
+w podglądzie jest inicjał). Komunikaty skryptu (brakujące pola, za dużo punktów „W skrócie”, linki do źródeł
+w treści, niepoprawny login X) przekaż autorowi. Podgląd odświeżaj po większych zmianach.
 Plik `.podglad.html` służy tylko autorowi — nie dołącza się go do maila.
 
 ### Podgląd wpisu na X
@@ -156,10 +158,11 @@ python3 <katalog tego skilla>/scripts/podglad-x.py x-<temat>.md
 ```
 
 Skrypt zapisuje `x-<temat>.podglad.html` obok pliku. Pod każdym wpisem jest licznik znaków liczony jak na X
-(link = 23 znaki, emoji = 2) — wpisz te liczby w nagłówki `## Wpis n/N (xxx/280)`. Link do tekstu na
+(link = 23 znaki, emoji = 2) — wpisz te liczby w nagłówki `## Wpis n/N (xxx znaków)`. Limit konta to
+25 000 znaków, ale preferowane są wpisy do 280 — dłuższe licznik oznacza na pomarańczowo. Link do tekstu na
 zarobkilekarzy.pl (jeśli wpis go zapowiada) dostaje kartę z obrazkiem ze strony, jak na X; „Propozycja
 grafiki” jest w ramce w pierwszym wpisie, a podkładka — w pasku u góry, poza wpisami. Ostrzeżenia skryptu
-(za długi wpis, wykrzyknik, oznaczenie `@konta`, link do źródła albo „Źródło:” we wpisie, liczba bez
+(wpis ponad 280 znaków, wykrzyknik, oznaczenie `@konta`, link do źródła albo „Źródło:” we wpisie, liczba bez
 źródła w podkładce) przekaż autorowi i popraw razem z nim — skracając jego słowa, nie dopisując nowych.
 
 ### Krok 6. Kontrola

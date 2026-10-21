@@ -31,6 +31,9 @@ keyPoints:                     # „W skrócie”: 3, najwyżej 4 punkty, każdy
 stat: { value: "73%", unit: "czego dotyczy liczba" }   # opcjonalnie: jedna liczba na kartę w spisie
 related:                       # opcjonalnie: powiązane teksty z zarobkilekarzy.pl
   - https://zarobkilekarzy.pl/…
+authorName: Imię albo pseudonim # opcjonalnie: karta autora z profilem X pod tekstem
+authorX: nazwa_konta            # login na X bez „@” (albo adres profilu)
+authorBio: Jedno zdanie o autorze.
 ---
 
 Pierwszy akapit: scena albo konkretny przypadek (bez nazwisk), który pokazuje problem.[^zrodlo-1]
@@ -72,7 +75,9 @@ Uwagi:
   Grafikę przygotowuje redakcja w systemie wizualnym strony.
 - **Zdjęcia** — tylko własne albo z jasną licencją, w osobnych plikach, z opisem i informacją o prawach.
   Przed wysłaniem usuń z nich metadane (EXIF: autor, GPS, urządzenie).
-- Nie dodawaj podpisu, biogramu ani informacji o pomocy AI — redakcja ustala to z autorem w mailu.
+- **Karta autora** — jeśli autor chce i ma konto na X, pod tekstem pojawia się karta z jego profilem
+  (`authorName`, `authorX`, `authorBio`). To decyzja autora: zapytaj, nie zakładaj. Bez tych pól tekst idzie
+  bez podpisu. Nie dodawaj informacji o pomocy AI.
 - **Podgląd w wyglądzie strony** czyta pola z nagłówka (`title`, `category`, `summary`, `keyPoints`)
   i sekcje o dokładnie takich nazwach jak w szablonie — trzymaj się ich (`SKILL.md` → „Podgląd artykułu”).
 
@@ -81,8 +86,9 @@ Uwagi:
 **Czym jest:** krótki tekst do opublikowania na koncie serwisu — pojedynczy wpis albo wątek. Jedna liczba,
 jeden mechanizm. Często to dobry pierwszy krok przed artykułem.
 
-**Limit:** licz **280 znaków na wpis** (link liczy się jako 23 znaki). Wątek: każdy wpis osobno w limicie;
-najlepiej 3–6 wpisów.
+**Długość:** konto ma limit premium (25 000 znaków na wpis), ale **preferowane są krótkie wpisy** —
+najlepiej do 280 znaków (link liczy się jako 23). Dłuższy wpis X na osi czasu ucina i pokazuje
+„Pokaż więcej”, więc najważniejsze musi być w pierwszych zdaniach. Wątek: najlepiej 3–6 wpisów.
 
 **Źródła — w podkładce, nie we wpisie.** Wpis nie zawiera linków do źródeł ani dopisków „Źródło: …”.
 Każda liczba i teza ma źródło w **podkładce**: sekcji `## Podkładka` na końcu pliku, której redakcja nie
@@ -102,11 +108,11 @@ publikuje. Zasada „każda teza ma źródło” obowiązuje tak samo jak w arty
 ```markdown
 # Wpis na X: <temat w kilku słowach>
 
-## Wpis 1/N  (xxx/280)
+## Wpis 1/N  (xxx znaków)
 [Liczba z jednostką i okresem] — [co znaczy, jednym zdaniem].
 [Mechanizm: dlaczego tak jest albo czego nie widać].
 
-## Wpis 2/N  (xxx/280)
+## Wpis 2/N  (xxx znaków)
 …
 
 ## Propozycja grafiki   ← opcjonalnie
@@ -123,7 +129,7 @@ Teza jednym zdaniem; co pokazać; dane; źródło.
 ```
 
 Przy każdym wpisie podaj w nawiasie liczbę znaków — dokładną daje podgląd wpisu na X (`SKILL.md` →
-„Podgląd wpisu na X”). Jeśli wpis przekracza limit — skróć słowa autora albo zaproponuj podział na dwa
-wpisy; nie wyrzucaj po cichu zastrzeżenia. Nagłówki `## Wpis n/N`, `## Propozycja grafiki`, `## Podkładka`
+„Podgląd wpisu na X”). Jeśli wpis ma więcej niż 280 znaków — zaproponuj skrót słów autora albo podział na
+dwa wpisy (dłuższy wpis jest dopuszczalny, ale to wyjątek); nie wyrzucaj po cichu zastrzeżenia. Nagłówki `## Wpis n/N`, `## Propozycja grafiki`, `## Podkładka`
 i `## Dla redakcji` muszą mieć takie brzmienie — po nich podgląd rozpoznaje części pliku, a pozycje
 podkładki zaczynające się od „Wpis n” przypisuje do wpisów.

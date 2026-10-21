@@ -14,7 +14,11 @@ import { fileURLToPath } from 'node:url';
 
 const SITE = (process.env.PODGLAD_STRONA || 'https://zarobkilekarzy.pl').replace(/\/$/, '');
 const ACCOUNT = { name: 'zarobkilekarzy.pl', handle: '@ZarobkiLekarzy' };
-const LIMIT = 280;
+/** limit konta premium na X; krótsze wpisy są preferowane — ponad SHORT oś czasu pokazuje początek i „Pokaż więcej” */
+const LIMIT = 25000;
+const SHORT = 280;
+/** „1 znak”, „2–4 znaki” (poza 12–14), „5 znaków” */
+const chars = (n) => `${n} ${n === 1 ? 'znak' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'znaki' : 'znaków'}`;
 const URL_LENGTH = 23;
 const URL_RE = /https?:\/\/[^\s<>"]+[^\s<>".,;:!?)\]'”]/g;
 /** emoji jako jawne zakresy (te same w podglad-x.py): flaga z dwóch liter regionalnych albo znak z modyfikatorami */
@@ -121,7 +125,8 @@ function checkPost(text, i, total, sources) {
   const w = [];
   const n = weightedLength(text);
   const label = total > 1 ? `Wpis ${i + 1}/${total}` : 'Wpis';
-  if (n > LIMIT) w.push(`${label}: ${n}/${LIMIT} znaków — za długi o ${n - LIMIT}.`);
+  if (n > LIMIT) w.push(`${label}: ${chars(n)} — ponad limit konta (${LIMIT}) o ${n - LIMIT}.`);
+  else if (n > SHORT) w.push(`${label}: ${chars(n)} — ponad ${SHORT} oś czasu X pokaże początek i „Pokaż więcej”; krótsze wpisy są preferowane.`);
   if (!text.trim()) w.push(`${label}: pusty.`);
   const plain = text.replace(URL_RE, '');
   if (plain.includes('!')) w.push(`${label}: wykrzyknik — głos serwisu jest bez wykrzykników.`);
@@ -163,7 +168,7 @@ function renderPost(text, i, total, avatar, card, graphic) {
     <div class="post__text">${renderText(text)}</div>
     ${media}
     <div class="post__actions">${actions}</div>
-    <p class="post__count${n > LIMIT ? ' post__count--over' : ''}">${total > 1 ? `${i + 1}/${total} · ` : ''}${n}/${LIMIT} znaków</p>
+    <p class="post__count${n > LIMIT ? ' post__count--over' : n > SHORT ? ' post__count--long' : ''}">${total > 1 ? `${i + 1}/${total} · ` : ''}${chars(n)}${n > SHORT && n <= LIMIT ? ` · ponad ${SHORT}: „Pokaż więcej”` : ''}</p>
   </div>
 </article>`;
 }
@@ -236,6 +241,7 @@ const html = `<!doctype html>
   .post__actions { display: flex; justify-content: space-between; max-width: 425px; margin-top: 12px; }
   .post__actions svg { width: 18px; height: 18px; fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .post__count { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+  .post__count--long { color: #b45309; font-weight: 700; }
   .post__count--over { color: #f4212e; font-weight: 700; }
 </style>
 </head>

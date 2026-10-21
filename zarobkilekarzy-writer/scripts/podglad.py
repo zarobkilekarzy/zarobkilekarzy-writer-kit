@@ -519,7 +519,38 @@ def main():
     aside_open = (re.search(r'<aside[^>]*class="[^"]*\baside--note\b[^"]*"[^>]*>', prose_old) or [None])[0]
     aside_cid = attrs_of(aside_open or '')
     foot_head = (re.search(r'<details[^>]*class="[^"]*\bfootnotes\b[^"]*"[\s\S]*?</summary>', prose_old) or [None])[0]
-    prose = content_html
+
+    # karta autora na X (XProfile) pod treścią — gdy szkic ma authorX; znaczniki i style z karty na wzorze
+    author_card = ''
+    author_x = str(data.get('authorX') or '').strip()
+    author_x = re.sub(r'[/?#].*$', '', re.sub(r'^https?://(www\.)?(x|twitter)\.com/', '', re.sub(r'^@', '', author_x)))
+    if author_x:
+        card_match = re.search(r'<article[^>]*class="[^"]*\bxp\b[^"]*"[\s\S]*?</article>', prose_old)
+        name = str(data.get('authorName') or '').strip() or author_x
+        if not re.fullmatch(r'[A-Za-z0-9_]{1,15}', author_x):
+            warnings.append(f'authorX „{data.get("authorX")}” nie wygląda na nazwę konta X (litery, cyfry i _, do 15 znaków).')
+        if not card_match:
+            warnings.append('Ten wzór strony nie ma karty autora (XProfile) — podgląd bez niej.')
+        else:
+            card = card_match.group(0)
+            handle_match = re.search(r'<p[^>]*class="xp__handle"[^>]*>@([^<]*)<', card)
+            template_handle = handle_match.group(1) if handle_match else ''
+            bio = data.get('authorBio')
+
+            def bio_block(m):
+                if not bio:
+                    return ''
+                return re.sub(r'(>)[^<]*(</p>)$', lambda b: b.group(1) + r.inline(str(bio), refs=False) + b.group(2), m.group(0))
+
+            card = re.sub(r'(aria-label=")[^"]*(")', lambda m: f'{m.group(1)}{esc(name)} (@{esc(author_x)}) w serwisie X{m.group(2)}', card, count=1)
+            card = re.sub(r'(<span[^>]*xp__avatar--initial[^>]*>)[^<]*', lambda m: m.group(1) + esc((re.sub(r'^@', '', name) or '?')[0]), card, count=1)
+            card = re.sub(r'(<p[^>]*class="xp__name"[^>]*>)[^<]*', lambda m: m.group(1) + esc(name), card, count=1)
+            card = re.sub(r'(<p[^>]*class="xp__handle"[^>]*>)[^<]*', lambda m: f'{m.group(1)}@{esc(author_x)}', card, count=1)
+            card = re.sub(r'<p[^>]*class="xp__bio"[^>]*>[^<]*</p>', bio_block, card, count=1)
+            card = card.replace(f'x.com/{template_handle}', f'x.com/{esc(author_x)}')
+            author_card = card.replace(f'@{template_handle} na X', f'@{esc(author_x)} na X')
+
+    prose = content_html + author_card
     if illustrations:
         if aside_open:
             prose += (f'{aside_open}<p class="aside__label"{aside_cid}>Dla redakcji</p><p class="aside__title"{aside_cid}>{ILLUSTRATIONS}</p>'

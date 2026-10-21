@@ -19,6 +19,7 @@ Kodowanie UTF-8. Jeden tekst = jeden plik.
 Sprawdź w pliku (a jeśli robiłeś podgląd — przejrzyj ostrzeżenia skryptu, bo sprawdza część z tych rzeczy sam):
 
 - [ ] Nagłówek YAML zaczyna się i kończy linią `---`.
+- [ ] Karta autora (`authorName`, `authorX`, `authorBio`) — tylko jeśli autor tego chce; login X bez „@”.
 - [ ] Jest `title` — bez kropki na końcu.
 - [ ] `category` to dokładnie jedno z: `Mechanizm`, `Dane`, `Analiza`, `Przewodnik`.
 - [ ] Jest `summary` — 1–2 zdania, pierwsze do ok. 120 znaków.
@@ -37,7 +38,8 @@ Sprawdź w pliku (a jeśli robiłeś podgląd — przejrzyj ostrzeżenia skryptu
 
 ## 3. Kontrola formatu — wpis na X
 
-- [ ] Każdy wpis ma nagłówek `## Wpis n/N` i licznik znaków; żaden nie przekracza 280 (link = 23 znaki).
+- [ ] Każdy wpis ma nagłówek `## Wpis n/N` i licznik znaków; najlepiej do 280 (link = 23 znaki) —
+      dłuższy tylko wyjątkowo, z najważniejszym w pierwszych zdaniach.
       Najprościej sprawdzić to podglądem wpisu na X — pokazuje licznik i ostrzeżenia.
 - [ ] Pierwszy wpis działa sam.
 - [ ] We wpisach nie ma linków do źródeł ani dopisków „Źródło: …”.

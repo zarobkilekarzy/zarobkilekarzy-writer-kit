@@ -436,7 +436,28 @@ const proseOld = article.slice(proseStart, proseEnd);
 const asideOpen = proseOld.match(/<aside[^>]*class="[^"]*\baside--note\b[^"]*"[^>]*>/)?.[0];
 const asideCid = attrsOf(asideOpen || '');
 const footHead = proseOld.match(/<details[^>]*class="[^"]*\bfootnotes\b[^"]*"[\s\S]*?<\/summary>/)?.[0];
-let prose = content.html;
+// karta autora na X (XProfile) pod treścią — gdy szkic ma authorX; znaczniki i style z karty na wzorze
+let authorCard = '';
+const authorX = String(data.authorX || '').trim().replace(/^@/, '').replace(/^https?:\/\/(www\.)?(x|twitter)\.com\//, '').replace(/[/?#].*$/, '');
+if (authorX) {
+  const card = proseOld.match(/<article[^>]*class="[^"]*\bxp\b[^"]*"[\s\S]*?<\/article>/)?.[0];
+  const name = String(data.authorName || '').trim() || authorX;
+  if (!/^[A-Za-z0-9_]{1,15}$/.test(authorX)) warnings.push(`authorX „${data.authorX}” nie wygląda na nazwę konta X (litery, cyfry i _, do 15 znaków).`);
+  if (!card) warnings.push('Ten wzór strony nie ma karty autora (XProfile) — podgląd bez niej.');
+  else {
+    const templateHandle = card.match(/<p[^>]*class="xp__handle"[^>]*>@([^<]*)</)?.[1] || '';
+    authorCard = card
+      .replace(/(aria-label=")[^"]*(")/, (_, a, b) => `${a}${esc(name)} (@${esc(authorX)}) w serwisie X${b}`)
+      .replace(/(<span[^>]*xp__avatar--initial[^>]*>)[^<]*/, (_, a) => a + esc([...name.replace(/^@/, '')][0] || '?'))
+      .replace(/(<p[^>]*class="xp__name"[^>]*>)[^<]*/, (_, a) => a + esc(name))
+      .replace(/(<p[^>]*class="xp__handle"[^>]*>)[^<]*/, (_, a) => `${a}@${esc(authorX)}`)
+      .replace(/<p[^>]*class="xp__bio"[^>]*>[^<]*<\/p>/, (bio) =>
+        data.authorBio ? bio.replace(/(>)[^<]*(<\/p>)$/, (_, a, b) => a + r.inline(String(data.authorBio), { refs: false }) + b) : '')
+      .split(`x.com/${templateHandle}`).join(`x.com/${esc(authorX)}`)
+      .split(`@${templateHandle} na X`).join(`@${esc(authorX)} na X`);
+  }
+}
+let prose = content.html + authorCard;
 if (illustrations) {
   prose += asideOpen
     ? `${asideOpen}<p class="aside__label"${asideCid}>Dla redakcji</p><p class="aside__title"${asideCid}>${ILLUSTRATIONS}</p><div class="aside__body"${asideCid}>${illustrations}</div></aside>`

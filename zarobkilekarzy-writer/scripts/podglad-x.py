@@ -24,7 +24,15 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 SITE = (os.environ.get('PODGLAD_STRONA') or 'https://zarobkilekarzy.pl').rstrip('/')
 ACCOUNT = {'name': 'zarobkilekarzy.pl', 'handle': '@ZarobkiLekarzy'}
-LIMIT = 280
+# limit konta premium na X; krótsze wpisy są preferowane — ponad SHORT oś czasu pokazuje początek i „Pokaż więcej”
+LIMIT = 25000
+SHORT = 280
+
+
+def chars(n):
+    """„1 znak”, „2–4 znaki” (poza 12–14), „5 znaków”"""
+    word = 'znak' if n == 1 else 'znaki' if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14 else 'znaków'
+    return f'{n} {word}'
 URL_LENGTH = 23
 URL_RE = re.compile(r'https?://[^\s<>"]+[^\s<>".,;:!?)\]\'”]')
 # emoji jako jawne zakresy (te same w podglad-x.mjs): flaga z dwóch liter regionalnych albo znak z modyfikatorami
@@ -146,7 +154,9 @@ def check_post(text, i, total, sources):
     n = weighted_length(text)
     label = f'Wpis {i + 1}/{total}' if total > 1 else 'Wpis'
     if n > LIMIT:
-        w.append(f'{label}: {n}/{LIMIT} znaków — za długi o {n - LIMIT}.')
+        w.append(f'{label}: {chars(n)} — ponad limit konta ({LIMIT}) o {n - LIMIT}.')
+    elif n > SHORT:
+        w.append(f'{label}: {chars(n)} — ponad {SHORT} oś czasu X pokaże początek i „Pokaż więcej”; krótsze wpisy są preferowane.')
     if not text.strip():
         w.append(f'{label}: pusty.')
     plain = URL_RE.sub('', text)
@@ -186,7 +196,8 @@ def render_post(text, i, total, avatar, card, graphic):
     else:
         media = ''
     thread = ' post--thread' if i < total - 1 else ''
-    over = ' post__count--over' if n > LIMIT else ''
+    over = ' post__count--over' if n > LIMIT else ' post__count--long' if n > SHORT else ''
+    more = f' · ponad {SHORT}: „Pokaż więcej”' if SHORT < n <= LIMIT else ''
     position = f'{i + 1}/{total} · ' if total > 1 else ''
     return f'''<article class="post{thread}">
   <div class="post__side"><img class="avatar" src="{avatar}" alt=""></div>
@@ -195,7 +206,7 @@ def render_post(text, i, total, avatar, card, graphic):
     <div class="post__text">{render_text(text)}</div>
     {media}
     <div class="post__actions">{ACTIONS}</div>
-    <p class="post__count{over}">{position}{n}/{LIMIT} znaków</p>
+    <p class="post__count{over}">{position}{chars(n)}{more}</p>
   </div>
 </article>'''
 
@@ -235,6 +246,7 @@ CSS = '''  * { box-sizing: border-box; }
   .post__actions { display: flex; justify-content: space-between; max-width: 425px; margin-top: 12px; }
   .post__actions svg { width: 18px; height: 18px; fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .post__count { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+  .post__count--long { color: #b45309; font-weight: 700; }
   .post__count--over { color: #f4212e; font-weight: 700; }
 '''
 
