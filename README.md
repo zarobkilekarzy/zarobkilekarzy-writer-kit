@@ -36,12 +36,13 @@ https://github.com/zarobkilekarzy/zarobkilekarzy-writer-kit
      swojej wersji, który katalog czyta.
    Jeśli nie masz pewności, zapytaj mnie, zanim cokolwiek skopiujesz.
 2. Pobierz repozytorium do katalogu tymczasowego (git clone --depth 1 albo archiwum ZIP z GitHuba).
-3. Skopiuj CAŁY folder „zarobkilekarzy-writer” (plik SKILL.md i katalog references/) do katalogu
+3. Skopiuj CAŁY folder „zarobkilekarzy-writer” (SKILL.md oraz katalogi references/ i scripts/) do katalogu
    skilli, tak żeby powstała ścieżka <katalog skilli>/zarobkilekarzy-writer/SKILL.md.
    Jeśli taki folder już istnieje — pokaż mi różnice i zapytaj, czy nadpisać.
-4. Niczego teraz nie uruchamiaj. Jedyny skrypt, scripts/podglad.mjs (podgląd artykułu, Node 18+,
-   bez zależności), skill uruchamia później, gdy poproszę o podgląd. Sprawdź tylko, czy masz Node 18+
-   (node --version), i powiedz mi, jeśli nie.
+4. Niczego teraz nie uruchamiaj. Skrypt podglądu artykułu (scripts/podglad.mjs dla Node 18+ albo
+   scripts/podglad.py dla Pythona 3.8+, bez zależności) skill uruchamia później, gdy poproszę o podgląd.
+   Sprawdź tylko, czy mam Node (node --version) albo Pythona (python3 --version, w Windows: py --version),
+   i powiedz mi, jeśli nie ma żadnego z nich.
 5. Usuń katalog tymczasowy.
 6. Potwierdź instalację: podaj pełną ścieżkę do SKILL.md, przeczytaj go i streść mi w 3 zdaniach,
    jak będziesz mi pomagać. Powiedz, czy trzeba uruchomić Cię ponownie, żeby skill był widoczny.
@@ -63,13 +64,18 @@ W Claude Code skill możesz też wywołać wprost: `/zarobkilekarzy-writer`.
 
 ## Podgląd artykułu
 
-Poproś agenta: *„Pokaż podgląd”*. Agent uruchomi `scripts/podglad.mjs`, który pobiera z zarobkilekarzy.pl
+Poproś agenta: *„Pokaż podgląd”*. Agent uruchomi skrypt podglądu (w Node albo w Pythonie — wystarczy jedno
+z nich, wynik jest ten sam). Skrypt pobiera z zarobkilekarzy.pl
 szablon podglądu z układem artykułu (style i fonty), wstawia w niego Twój tekst i zapisuje obok szkicu plik
 `….podglad.html` do otwarcia w przeglądarce. Luki do uzupełnienia są w nim zaznaczone na żółto.
 Ręcznie:
 
 ```bash
 node ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad.mjs artykul-temat.md
+```
+
+```bash
+python3 ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad.py artykul-temat.md
 ```
 
 (w Codexie ścieżka do katalogu skilli jest inna). Podgląd to tylko widok dla Ciebie — do maila dołącz
@@ -88,7 +94,8 @@ decyduje redakcja; może odpisać z pytaniami albo poprawkami.
 zarobkilekarzy-writer/
 ├── SKILL.md                     # rola asystenta, przebieg pracy, zasady, których agent nie łamie
 ├── scripts/
-│   └── podglad.mjs              # podgląd artykułu w wyglądzie strony (Node 18+, bez zależności)
+│   ├── podglad.mjs              # podgląd artykułu w wyglądzie strony (Node 18+, bez zależności)
+│   └── podglad.py               # to samo w Pythonie 3.8+ (tylko biblioteka standardowa)
 └── references/
     ├── formaty.md               # artykuł na stronę i wpis na X: wymagania i szablony plików
     ├── rzetelnosc.md            # źródła, statusy twierdzeń, nazwiska, prawo cytatu, sprostowania

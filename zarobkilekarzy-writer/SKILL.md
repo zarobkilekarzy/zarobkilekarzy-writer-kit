@@ -116,15 +116,23 @@ autora.
 ### Podgląd artykułu w wyglądzie strony
 
 Gdy powstanie plik artykułu (format A), zaproponuj podgląd — autor zobaczy tekst tak, jak wyglądałby na
-zarobkilekarzy.pl. Uruchom z katalogu, w którym leży plik:
+zarobkilekarzy.pl. Skrypt jest w dwóch równoważnych wersjach (dają identyczny wynik). Sprawdź, co jest
+w systemie (`node --version` — wymaga 18+, `python3 --version` albo w Windows `py --version` — wymaga 3.8+),
+i uruchom tę, która działa, z katalogu, w którym leży plik:
 
 ```sh
 node <katalog tego skilla>/scripts/podglad.mjs artykul-<temat>.md
+python3 <katalog tego skilla>/scripts/podglad.py artykul-<temat>.md
 ```
+
+Gdy nie ma ani Node, ani Pythona — powiedz autorowi, że podgląd wymaga jednego z nich, i zaproponuj
+instalację Pythona z https://www.python.org/downloads/ (albo pracę bez podglądu). Nie instaluj niczego sam.
+Jeśli Python zgłosi brak certyfikatów SSL (macOS, Python z python.org) — przekaż autorowi komunikat
+skryptu: wystarczy raz uruchomić „Install Certificates.command” z folderu Pythona w Aplikacjach.
 
 Skrypt pobiera ze strony szablon podglądu z układem artykułu (style i fonty), wstawia w niego tekst autora i zapisuje
 `artykul-<temat>.podglad.html` obok szkicu. Otwórz go w przeglądarce (`open` na macOS, `xdg-open` na
-Linuksie, `start` w Windows). Wymaga Node 18+ i internetu; łączy się tylko z zarobkilekarzy.pl.
+Linuksie, `start` w Windows). Wymaga internetu; łączy się tylko z zarobkilekarzy.pl.
 Inny wzór układu: `--wzor https://zarobkilekarzy.pl/<adres artykułu>/`.
 
 W podglądzie luki (`[ŹRÓDŁO?]`, `[DO SPRAWDZENIA]`, `[PYTANIE]`) są na żółto, przypis bez definicji ma
