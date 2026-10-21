@@ -542,6 +542,12 @@ def main():
         warnings.append(f'Odwołania do przypisów bez definicji: {", ".join(notes["missing"])}.')
     if notes['unused']:
         warnings.append(f'Przypisy bez odwołania w tekście: {", ".join(notes["unused"])}.')
+    # źródła są w przypisach — w treści zostają tylko odnośniki do innych stron serwisu
+    prose_urls = [url for url in re.findall(r'https?://[^\s)<>"\]]+', f'{draft_main}\n{summary}\n' + '\n'.join(key_points))
+                  if not url.startswith(f'{SITE}/') and url != SITE]
+    if prose_urls:
+        more = ', …' if len(prose_urls) > 3 else ''
+        warnings.append(f'Linki do źródeł w treści ({len(prose_urls)}) — źródła idą do przypisów [^id]: {", ".join(prose_urls[:3])}{more}.')
 
     banner = (
         f'<div class="podglad-pasek" role="note">Podgląd lokalny szkicu — nieopublikowane · {esc(os.path.basename(input_path))} · '

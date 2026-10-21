@@ -454,6 +454,13 @@ if (!title || !data.summary || !keyPoints.length) warnings.push('Brakuje title, 
 if (keyPoints.length > 4) warnings.push(`„W skrócie” ma ${keyPoints.length} punktów (najwyżej 4).`);
 if (notes.missing.length) warnings.push(`Odwołania do przypisów bez definicji: ${notes.missing.join(', ')}.`);
 if (notes.unused.length) warnings.push(`Przypisy bez odwołania w tekście: ${notes.unused.join(', ')}.`);
+// źródła są w przypisach — w treści zostają tylko odnośniki do innych stron serwisu
+const proseUrls = [...`${draft.main}\n${data.summary || ''}\n${keyPoints.join('\n')}`.matchAll(/https?:\/\/[^\s)<>"\]]+/g)]
+  .map((m) => m[0])
+  .filter((url) => !url.startsWith(`${SITE}/`) && url !== SITE);
+if (proseUrls.length) {
+  warnings.push(`Linki do źródeł w treści (${proseUrls.length}) — źródła idą do przypisów [^id]: ${proseUrls.slice(0, 3).join(', ')}${proseUrls.length > 3 ? ', …' : ''}.`);
+}
 
 const banner =
   `<div class="podglad-pasek" role="note">Podgląd lokalny szkicu — nieopublikowane · ${esc(path.basename(input))} · ` +

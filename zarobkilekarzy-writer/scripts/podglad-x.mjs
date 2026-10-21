@@ -2,8 +2,8 @@
 // Podgląd wpisu albo wątku na X z konta @ZarobkiLekarzy.
 //
 // Czyta plik x-<temat>.md (formaty.md, część B) i zapisuje obok plik HTML z wpisami tak, jak na osi czasu X:
-// avatar i nazwa konta, tekst z linkami, karta linku do zarobkilekarzy.pl, licznik znaków liczony jak na X,
-// tryb jasny i ciemny obok siebie. Wymaga Node 18+; bez zależności. Łączy się tylko z zarobkilekarzy.pl
+// avatar i nazwa konta, tekst, karta linku do zarobkilekarzy.pl, licznik znaków liczony jak na X, tryb jasny
+// i ciemny obok siebie. Źródła wpisu są w podkładce (## Podkładka), nie we wpisie — podgląd pokazuje ją osobno. Wymaga Node 18+; bez zależności. Łączy się tylko z zarobkilekarzy.pl
 // (karta linku); bez internetu podgląd powstaje bez karty. To samo robi podglad-x.py (identyczny wynik).
 //
 // Użycie: node podglad-x.mjs x-temat.md
@@ -48,6 +48,7 @@ function parsePost(src) {
   return {
     posts: sections.filter((s) => /^Wpis\b/i.test(s.title)).map(text),
     graphic: text(sections.find((s) => /^Propozycja grafiki/i.test(s.title)) || { lines: [] }),
+    sources: text(sections.find((s) => /^Podkładka/i.test(s.title)) || { lines: [] }),
     editors: text(sections.find((s) => /^Dla redakcji/i.test(s.title)) || { lines: [] }),
   };
 }
@@ -110,7 +111,13 @@ async function fetchCard(url) {
 
 // ---------- ostrzeżenia ----------
 
-function checkPost(text, i, total) {
+/** Czy podkładka ma źródło (link) dla wpisu nr i+1: pozycja „Wpis n — …”; przy pojedynczym wpisie wystarczy link. */
+function hasSource(sources, i, total) {
+  const entry = new RegExp(`^\\s*(?:[-*]\\s*)?Wpis\\s+${i + 1}(?![0-9])`, 'i');
+  return sources.split('\n').some((line) => line.match(URL_RE) && (total === 1 || entry.test(line)));
+}
+
+function checkPost(text, i, total, sources) {
   const w = [];
   const n = weightedLength(text);
   const label = total > 1 ? `Wpis ${i + 1}/${total}` : 'Wpis';
@@ -119,7 +126,13 @@ function checkPost(text, i, total) {
   const plain = text.replace(URL_RE, '');
   if (plain.includes('!')) w.push(`${label}: wykrzyknik — głos serwisu jest bez wykrzykników.`);
   if (/(^|[^\p{L}\p{N}_])@[\p{L}\p{N}_]/u.test(plain)) w.push(`${label}: oznaczenie konta (@…) — wpisy nie oznaczają osób.`);
-  if (/[0-9]/.test(plain) && plain === text) w.push(`${label}: liczba bez linku do źródła.`);
+  if ((text.match(URL_RE) || []).some((url) => !url.startsWith(`${SITE}/`) && url !== SITE)) {
+    w.push(`${label}: link spoza zarobkilekarzy.pl — źródła idą do podkładki, nie do wpisu.`);
+  }
+  if (/[Źź]ródł[oa]\s*:/.test(plain)) w.push(`${label}: dopisek „Źródło:” — źródła idą do podkładki, nie do wpisu.`);
+  if (/[0-9]/.test(plain) && !hasSource(sources, i, total)) {
+    w.push(`${label}: liczba bez źródła w podkładce — dopisz w „## Podkładka” pozycję „Wpis ${i + 1} — …” z linkiem.`);
+  }
   return w;
 }
 
@@ -163,7 +176,7 @@ try {
 } catch (err) {
   fail(`Nie mogę odczytać pliku ${input} (${err.code}).`);
 }
-const { posts, graphic, editors } = parsePost(src);
+const { posts, graphic, sources, editors } = parsePost(src);
 if (!posts.length) fail('Nie znalazłem żadnego wpisu. Każdy wpis zaczyna się od nagłówka „## Wpis 1/N” (formaty.md, część B).');
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -175,7 +188,7 @@ const cards = await Promise.all(posts.map((p) => {
   return urls.length ? fetchCard(urls[urls.length - 1]) : null;
 }));
 
-const warnings = posts.flatMap((p, i) => checkPost(p, i, posts.length));
+const warnings = posts.flatMap((p, i) => checkPost(p, i, posts.length, sources));
 for (const c of cards) if (c?.error) warnings.push(`Nie udało się pobrać karty linku ${c.url} (${c.error}) — podgląd bez obrazka.`);
 
 /** 2–4, 22–24… wpisy; 5–21, 25… wpisów */
@@ -227,7 +240,7 @@ const html = `<!doctype html>
 </style>
 </head>
 <body>
-<div class="bar" role="note">Podgląd lokalny wpisu na X — nieopublikowane · ${esc(path.basename(input))} · ${posts.length === 1 ? '1 wpis' : `wątek: ${posts.length} ${postsWord(posts.length)}`}${warnings.map((w) => `<br>Uwaga: ${esc(w)}`).join('')}${editors ? `<details><summary>Dla redakcji</summary><div class="notes">${esc(editors)}</div></details>` : ''}</div>
+<div class="bar" role="note">Podgląd lokalny wpisu na X — nieopublikowane · ${esc(path.basename(input))} · ${posts.length === 1 ? '1 wpis' : `wątek: ${posts.length} ${postsWord(posts.length)}`}${warnings.map((w) => `<br>Uwaga: ${esc(w)}`).join('')}${sources ? `<details><summary>Podkładka — źródła (nie publikujemy)</summary><div class="notes">${esc(sources)}</div></details>` : ''}${editors ?`<details><summary>Dla redakcji</summary><div class="notes">${esc(editors)}</div></details>` : ''}</div>
 <main class="cols">${column('light')}${column('dark')}</main>
 </body>
 </html>

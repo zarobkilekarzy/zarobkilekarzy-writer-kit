@@ -79,15 +79,19 @@ Uwagi:
 ## B. Wpis gościnny na X (@ZarobkiLekarzy)
 
 **Czym jest:** krótki tekst do opublikowania na koncie serwisu — pojedynczy wpis albo wątek. Jedna liczba,
-jeden mechanizm, jedno źródło. Często to dobry pierwszy krok przed artykułem.
+jeden mechanizm. Często to dobry pierwszy krok przed artykułem.
 
 **Limit:** licz **280 znaków na wpis** (link liczy się jako 23 znaki). Wątek: każdy wpis osobno w limicie;
 najlepiej 3–6 wpisów.
 
+**Źródła — w podkładce, nie we wpisie.** Wpis nie zawiera linków do źródeł ani dopisków „Źródło: …”.
+Każda liczba i teza ma źródło w **podkładce**: sekcji `## Podkładka` na końcu pliku, której redakcja nie
+publikuje. Zasada „każda teza ma źródło” obowiązuje tak samo jak w artykule — zmienia się tylko miejsce.
+
 **Zasady formatu:**
 - pierwszy wpis musi działać sam — ktoś przeczyta tylko jego;
 - 1 wpis = 1 myśl; liczba z jednostką i okresem;
-- źródło przy liczbie (link do dokumentu albo do strony zarobkilekarzy.pl, gdzie jest przypis);
+- źródła każdego wpisu w podkładce, z numerem wpisu, którego dotyczą;
 - bez oznaczania osób (`@nazwa`), bez nazwisk, bez wykrzykników i bez „🚨”;
 - grafika — tylko opis propozycji (co pokazać, dane, źródło), wykonuje ją redakcja.
 
@@ -99,13 +103,16 @@ najlepiej 3–6 wpisów.
 ## Wpis 1/N  (xxx/280)
 [Liczba z jednostką i okresem] — [co znaczy, jednym zdaniem].
 [Mechanizm: dlaczego tak jest albo czego nie widać].
-Źródło: https://…
 
 ## Wpis 2/N  (xxx/280)
 …
 
 ## Propozycja grafiki   ← opcjonalnie
 Teza jednym zdaniem; co pokazać; dane; źródło.
+
+## Podkładka
+- Wpis 1 — [liczba albo teza]: Wydawca, [tytuł dokumentu](https://…), data, strona/tabela/punkt.
+- Wpis 2 — …
 
 ## Dla redakcji
 - Sprawdzone w oryginale: …
@@ -115,5 +122,6 @@ Teza jednym zdaniem; co pokazać; dane; źródło.
 
 Przy każdym wpisie podaj w nawiasie liczbę znaków — dokładną daje podgląd wpisu na X (`SKILL.md` →
 „Podgląd wpisu na X”). Jeśli wpis przekracza limit — skróć słowa autora albo zaproponuj podział na dwa
-wpisy; nie wyrzucaj po cichu źródła ani zastrzeżenia. Nagłówki `## Wpis n/N`, `## Propozycja grafiki`
-i `## Dla redakcji` muszą mieć takie brzmienie — po nich podgląd rozpoznaje części pliku.
+wpisy; nie wyrzucaj po cichu zastrzeżenia. Nagłówki `## Wpis n/N`, `## Propozycja grafiki`, `## Podkładka`
+i `## Dla redakcji` muszą mieć takie brzmienie — po nich podgląd rozpoznaje części pliku, a pozycje
+podkładki zaczynające się od „Wpis n” przypisuje do wpisów.

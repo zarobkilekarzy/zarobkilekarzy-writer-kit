@@ -2,8 +2,8 @@
 # Podgląd wpisu albo wątku na X z konta @ZarobkiLekarzy — wersja w Pythonie (to samo co podglad-x.mjs).
 #
 # Czyta plik x-<temat>.md (formaty.md, część B) i zapisuje obok plik HTML z wpisami tak, jak na osi czasu X:
-# avatar i nazwa konta, tekst z linkami, karta linku do zarobkilekarzy.pl, licznik znaków liczony jak na X,
-# tryb jasny i ciemny obok siebie. Wymaga Pythona 3.8+; tylko biblioteka standardowa. Łączy się tylko
+# avatar i nazwa konta, tekst, karta linku do zarobkilekarzy.pl, licznik znaków liczony jak na X, tryb jasny
+# i ciemny obok siebie. Źródła wpisu są w podkładce (## Podkładka), nie we wpisie — podgląd pokazuje ją osobno. Wymaga Pythona 3.8+; tylko biblioteka standardowa. Łączy się tylko
 # z zarobkilekarzy.pl (karta linku); bez internetu podgląd powstaje bez karty.
 #
 # Użycie: python3 podglad-x.py x-temat.md
@@ -64,6 +64,7 @@ def parse_post(src):
     return {
         'posts': [text(s) for s in sections if re.match(r'Wpis\b', s['title'], re.IGNORECASE)],
         'graphic': text(first(r'Propozycja grafiki')),
+        'sources': text(first(r'Podkładka')),
         'editors': text(first(r'Dla redakcji')),
     }
 
@@ -134,7 +135,13 @@ def fetch_card(url):
 
 # ---------- ostrzeżenia ----------
 
-def check_post(text, i, total):
+def has_source(sources, i, total):
+    """Czy podkładka ma źródło (link) dla wpisu nr i+1: pozycja „Wpis n — …”; przy pojedynczym wpisie wystarczy link."""
+    entry = re.compile(rf'\s*(?:[-*]\s*)?Wpis\s+{i + 1}(?![0-9])', re.IGNORECASE)
+    return any(URL_RE.search(line) and (total == 1 or entry.match(line)) for line in sources.split('\n'))
+
+
+def check_post(text, i, total, sources):
     w = []
     n = weighted_length(text)
     label = f'Wpis {i + 1}/{total}' if total > 1 else 'Wpis'
@@ -147,8 +154,12 @@ def check_post(text, i, total):
         w.append(f'{label}: wykrzyknik — głos serwisu jest bez wykrzykników.')
     if re.search(r'(^|[^\w])@\w', plain):
         w.append(f'{label}: oznaczenie konta (@…) — wpisy nie oznaczają osób.')
-    if re.search(r'[0-9]', plain) and plain == text:
-        w.append(f'{label}: liczba bez linku do źródła.')
+    if any(not url.startswith(f'{SITE}/') and url != SITE for url in URL_RE.findall(text)):
+        w.append(f'{label}: link spoza zarobkilekarzy.pl — źródła idą do podkładki, nie do wpisu.')
+    if re.search(r'[Źź]ródł[oa]\s*:', plain):
+        w.append(f'{label}: dopisek „Źródło:” — źródła idą do podkładki, nie do wpisu.')
+    if re.search(r'[0-9]', plain) and not has_source(sources, i, total):
+        w.append(f'{label}: liczba bez źródła w podkładce — dopisz w „## Podkładka” pozycję „Wpis {i + 1} — …” z linkiem.')
     return w
 
 
@@ -240,7 +251,7 @@ def main():
     except OSError as err:
         fail(f'Nie mogę odczytać pliku {input_path} ({err.strerror}).')
     parsed = parse_post(src)
-    posts, graphic, editors = parsed['posts'], parsed['graphic'], parsed['editors']
+    posts, graphic, sources, editors = parsed['posts'], parsed['graphic'], parsed['sources'], parsed['editors']
     if not posts:
         fail('Nie znalazłem żadnego wpisu. Każdy wpis zaczyna się od nagłówka „## Wpis 1/N” (formaty.md, część B).')
 
@@ -254,7 +265,7 @@ def main():
         urls = URL_RE.findall(p)
         cards.append(fetch_card(urls[-1]) if urls else None)
 
-    warnings = [w for i, p in enumerate(posts) for w in check_post(p, i, len(posts))]
+    warnings = [w for i, p in enumerate(posts) for w in check_post(p, i, len(posts), sources)]
     for c in cards:
         if c and c.get('error'):
             warnings.append(f'Nie udało się pobrać karty linku {c["url"]} ({c["error"]}) — podgląd bez obrazka.')
@@ -268,6 +279,7 @@ def main():
     name = esc(os.path.basename(input_path))
     count = '1 wpis' if len(posts) == 1 else f'wątek: {len(posts)} {posts_word(len(posts))}'
     notes = ''.join(f'<br>Uwaga: {esc(w)}' for w in warnings)
+    notes += f'<details><summary>Podkładka — źródła (nie publikujemy)</summary><div class="notes">{esc(sources)}</div></details>' if sources else ''
     notes += f'<details><summary>Dla redakcji</summary><div class="notes">{esc(editors)}</div></details>' if editors else ''
     html = f'''<!doctype html>
 <html lang="pl">

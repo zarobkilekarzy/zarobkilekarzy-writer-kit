@@ -86,7 +86,8 @@ plik `.md`.
 
 Poproś agenta: *„Pokaż podgląd wpisu”*. Zobaczysz wpis albo wątek tak, jak na osi czasu X na koncie
 @ZarobkiLekarzy (tryb jasny i ciemny), z licznikiem znaków liczonym jak na X i ostrzeżeniami: za długi wpis,
-wykrzyknik, oznaczenie konta, liczba bez linku do źródła. Ręcznie:
+wykrzyknik, oznaczenie konta, link do źródła we wpisie, liczba bez źródła w podkładce. Źródła wpisu nie
+idą do jego treści, tylko do podkładki (`## Podkładka`), którą podgląd pokazuje osobno. Ręcznie:
 
 ```bash
 node ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad-x.mjs x-temat.md

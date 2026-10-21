@@ -27,6 +27,8 @@ Sprawdź w pliku (a jeśli robiłeś podgląd — przejrzyj ostrzeżenia skryptu
 - [ ] Każde `[^id]` w tekście ma definicję `[^id]: …` na końcu i każda definicja jest użyta.
 - [ ] Identyfikatory przypisów są opisowe (`[^nfz-plan-2026]`), bez spacji.
 - [ ] Każdy przypis ma wydawcę, tytuł z linkiem i datę.
+- [ ] W treści nie ma linków do źródeł — źródła są tylko w przypisach (linki do innych stron
+      zarobkilekarzy.pl są w porządku).
 - [ ] Sekcje `## Propozycje ilustracji` (jeśli są) i `## Dla redakcji` mają dokładnie takie nazwy i stoją
       na końcu, przed definicjami przypisów albo po nich.
 - [ ] Usunięte są dopiski z szablonu („← opcjonalnie…”) i puste sekcje.
@@ -38,7 +40,8 @@ Sprawdź w pliku (a jeśli robiłeś podgląd — przejrzyj ostrzeżenia skryptu
 - [ ] Każdy wpis ma nagłówek `## Wpis n/N` i licznik znaków; żaden nie przekracza 280 (link = 23 znaki).
       Najprościej sprawdzić to podglądem wpisu na X — pokazuje licznik i ostrzeżenia.
 - [ ] Pierwszy wpis działa sam.
-- [ ] Przy każdej liczbie jest źródło (link).
+- [ ] We wpisach nie ma linków do źródeł ani dopisków „Źródło: …”.
+- [ ] Każda liczba i teza ma źródło w `## Podkładka`, z numerem wpisu („Wpis 2 — …”).
 - [ ] Nie ma oznaczeń osób (`@…`), nazwisk ani wykrzykników.
 
 ## 4. Sekcja „Dla redakcji”

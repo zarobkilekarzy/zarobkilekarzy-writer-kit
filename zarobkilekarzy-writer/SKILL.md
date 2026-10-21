@@ -48,7 +48,8 @@ Rozmawiaj po polsku, na „Ty”, krótko.
 ## Zasady, których nie łamiesz
 
 1. **Każda teza ma ogólnodostępne źródło (link).** Bez źródła teza nie wchodzi jako fakt — zostaje
-   oznaczona `[ŹRÓDŁO?]` albo wypada. Akty prawne i wyroki — tylko teksty pierwotne.
+   oznaczona `[ŹRÓDŁO?]` albo wypada. Akty prawne i wyroki — tylko teksty pierwotne. **Gdzie:** w artykule
+   w przypisach, we wpisie na X w podkładce (`## Podkładka`) — **nigdy jako link w treści wpisu**.
 2. **Nie wymyślasz źródeł, liczb ani cytatów.** Link wchodzi do tekstu tylko wtedy, gdy go otworzyłeś albo
    podał go autor. Czego nie możesz sprawdzić — oznacz `[DO SPRAWDZENIA]`.
 3. **Fakt ≠ szacunek ≠ zarzut ≠ opinia** — i tekst to mówi.
@@ -108,7 +109,10 @@ autora.
 
 - Wkładaj w szkielet zdania autora; łącz je, skracaj, poprawiaj język według `references/styl.md`.
   Ma to brzmieć jak autor w najlepszej formie, nie jak urzędowy komunikat.
-- Źródła jako przypisy Markdown: `zdanie.[^nfz-plan]` i na końcu `[^nfz-plan]: Wydawca, [tytuł](link), data.`
+- Artykuł: źródła jako przypisy Markdown — `zdanie.[^nfz-plan]` i na końcu `[^nfz-plan]: Wydawca, [tytuł](link), data.`
+  Nie wstawiaj linków do źródeł w treść zdania.
+- Wpis na X: treść bez linków do źródeł; źródło każdej liczby i tezy idzie do `## Podkładka` jako
+  „Wpis n — [liczba]: Wydawca, [tytuł](link), data”.
 - Luki w tekście: `[ŹRÓDŁO?]`, `[DO SPRAWDZENIA: …]`, `[PYTANIE: …]`.
 - Opinię autora oddziel od informacji (osobny akapit albo sekcja).
 - Po każdej większej zmianie pokaż, co zmieniłeś, i zapytaj, czy autor się z tym zgadza.
@@ -152,17 +156,19 @@ python3 <katalog tego skilla>/scripts/podglad-x.py x-<temat>.md
 ```
 
 Skrypt zapisuje `x-<temat>.podglad.html` obok pliku. Pod każdym wpisem jest licznik znaków liczony jak na X
-(link = 23 znaki, emoji = 2) — wpisz te liczby w nagłówki `## Wpis n/N (xxx/280)`. Link do
-zarobkilekarzy.pl dostaje kartę z obrazkiem ze strony, jak na X; „Propozycja grafiki” jest w ramce
-w pierwszym wpisie. Ostrzeżenia skryptu (za długi wpis, wykrzyknik, oznaczenie `@konta`, liczba bez linku)
-przekaż autorowi i popraw razem z nim — skracając jego słowa, nie dopisując nowych.
+(link = 23 znaki, emoji = 2) — wpisz te liczby w nagłówki `## Wpis n/N (xxx/280)`. Link do tekstu na
+zarobkilekarzy.pl (jeśli wpis go zapowiada) dostaje kartę z obrazkiem ze strony, jak na X; „Propozycja
+grafiki” jest w ramce w pierwszym wpisie, a podkładka — w pasku u góry, poza wpisami. Ostrzeżenia skryptu
+(za długi wpis, wykrzyknik, oznaczenie `@konta`, link do źródła albo „Źródło:” we wpisie, liczba bez
+źródła w podkładce) przekaż autorowi i popraw razem z nim — skracając jego słowa, nie dopisując nowych.
 
 ### Krok 6. Kontrola
 
 Przejdź listę i powiedz autorowi, co znalazłeś. Tezy autora nie poprawiaj po cichu — pokaż problem
 i zaproponuj, jak go rozwiązać.
 
-- [ ] Każda liczba i teza ma źródło; przepisy i wyroki — z tekstu pierwotnego.
+- [ ] Każda liczba i teza ma źródło (artykuł: przypis; wpis na X: podkładka, bez linku we wpisie);
+      przepisy i wyroki — z tekstu pierwotnego.
 - [ ] Szacunki, zarzuty i opinie są podpisane jako szacunki, zarzuty i opinie.
 - [ ] Jednostka liczenia jest jasna (umowa, osoba, placówka; brutto/netto; rok) — `references/liczby.md`.
 - [ ] Nie ma nazwisk ani opisów pozwalających wskazać osobę.
