@@ -555,7 +555,7 @@ def main():
     html = re.sub(r'<body([^>]*)>', lambda m: f'<body{m.group(1)}>{banner}', html, count=1)
 
     out_file = re.sub(r'\.md$', '', input_path, flags=re.IGNORECASE) + '.podglad.html'
-    with open(out_file, 'w', encoding='utf-8') as f:
+    with open(out_file, 'w', encoding='utf-8', newline='\n') as f:
         f.write(html)
     print(f'Zapisano podgląd: {os.path.abspath(out_file)}')
     for w in warnings:

@@ -16,7 +16,8 @@ pomaga to ułożyć w tekst zgodny z zasadami redakcyjnymi serwisu.
 - pilnuje **głosu**: spokojnie, rzeczowo, mechanizm → liczba → źródło → granice, bez nazwisk;
 - wyłapuje typowe **pułapki liczb** (umowa ≠ osoba, plan ≠ wykonanie, przychód ≠ dochód);
 - gdy się gubisz — **zatrzymuje się, porządkuje i proponuje kolejne kroki**;
-- pokazuje **podgląd artykułu w wyglądzie zarobkilekarzy.pl** (lokalny plik HTML ze stylami strony);
+- pokazuje **podgląd artykułu w wyglądzie zarobkilekarzy.pl** (lokalny plik HTML ze stylami strony)
+  i **podgląd wpisu albo wątku na X** z konta @ZarobkiLekarzy, z licznikiem znaków jak na X;
 - na koniec przygotowuje **plik do wysłania mailem** z notatką dla redakcji.
 
 **Skill jest asystentem, nie autorem.** Układa, poprawia i sprawdza — nie dopisuje tez, argumentów ani
@@ -39,8 +40,8 @@ https://github.com/zarobkilekarzy/zarobkilekarzy-writer-kit
 3. Skopiuj CAŁY folder „zarobkilekarzy-writer” (SKILL.md oraz katalogi references/ i scripts/) do katalogu
    skilli, tak żeby powstała ścieżka <katalog skilli>/zarobkilekarzy-writer/SKILL.md.
    Jeśli taki folder już istnieje — pokaż mi różnice i zapytaj, czy nadpisać.
-4. Niczego teraz nie uruchamiaj. Skrypt podglądu artykułu (scripts/podglad.mjs dla Node 18+ albo
-   scripts/podglad.py dla Pythona 3.8+, bez zależności) skill uruchamia później, gdy poproszę o podgląd.
+4. Niczego teraz nie uruchamiaj. Skrypty podglądu artykułu i wpisu na X (scripts/*.mjs dla Node 18+
+   albo scripts/*.py dla Pythona 3.8+, bez zależności) skill uruchamia później, gdy poproszę o podgląd.
    Sprawdź tylko, czy mam Node (node --version) albo Pythona (python3 --version, w Windows: py --version),
    i powiedz mi, jeśli nie ma żadnego z nich.
 5. Usuń katalog tymczasowy.
@@ -81,6 +82,20 @@ python3 ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad.py artykul-temat.
 (w Codexie ścieżka do katalogu skilli jest inna). Podgląd to tylko widok dla Ciebie — do maila dołącz
 plik `.md`.
 
+## Podgląd wpisu na X
+
+Poproś agenta: *„Pokaż podgląd wpisu”*. Zobaczysz wpis albo wątek tak, jak na osi czasu X na koncie
+@ZarobkiLekarzy (tryb jasny i ciemny), z licznikiem znaków liczonym jak na X i ostrzeżeniami: za długi wpis,
+wykrzyknik, oznaczenie konta, liczba bez linku do źródła. Ręcznie:
+
+```bash
+node ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad-x.mjs x-temat.md
+```
+
+```bash
+python3 ~/.claude/skills/zarobkilekarzy-writer/scripts/podglad-x.py x-temat.md
+```
+
 ## Wysyłka
 
 Gotowy plik (`artykul-….md` albo `x-….md`) z notatką „Dla redakcji” wyślij mailem na
@@ -95,7 +110,10 @@ zarobkilekarzy-writer/
 ├── SKILL.md                     # rola asystenta, przebieg pracy, zasady, których agent nie łamie
 ├── scripts/
 │   ├── podglad.mjs              # podgląd artykułu w wyglądzie strony (Node 18+, bez zależności)
-│   └── podglad.py               # to samo w Pythonie 3.8+ (tylko biblioteka standardowa)
+│   ├── podglad.py               # to samo w Pythonie 3.8+ (tylko biblioteka standardowa)
+│   ├── podglad-x.mjs            # podgląd wpisu albo wątku na X z konta @ZarobkiLekarzy (Node 18+)
+│   ├── podglad-x.py             # to samo w Pythonie 3.8+
+│   └── avatar-x.png             # avatar konta do podglądu wpisu
 └── references/
     ├── formaty.md               # artykuł na stronę i wpis na X: wymagania i szablony plików
     ├── rzetelnosc.md            # źródła, statusy twierdzeń, nazwiska, prawo cytatu, sprostowania

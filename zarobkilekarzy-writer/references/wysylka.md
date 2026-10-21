@@ -36,6 +36,7 @@ Sprawdź w pliku (a jeśli robiłeś podgląd — przejrzyj ostrzeżenia skryptu
 ## 3. Kontrola formatu — wpis na X
 
 - [ ] Każdy wpis ma nagłówek `## Wpis n/N` i licznik znaków; żaden nie przekracza 280 (link = 23 znaki).
+      Najprościej sprawdzić to podglądem wpisu na X — pokazuje licznik i ostrzeżenia.
 - [ ] Pierwszy wpis działa sam.
 - [ ] Przy każdej liczbie jest źródło (link).
 - [ ] Nie ma oznaczeń osób (`@…`), nazwisk ani wykrzykników.

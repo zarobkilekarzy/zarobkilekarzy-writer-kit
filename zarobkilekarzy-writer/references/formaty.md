@@ -113,5 +113,7 @@ Teza jednym zdaniem; co pokazać; dane; źródło.
 - Związek autora z tematem: …
 ```
 
-Przy każdym wpisie podaj w nawiasie liczbę znaków. Jeśli wpis przekracza limit — skróć słowa autora albo
-zaproponuj podział na dwa wpisy; nie wyrzucaj po cichu źródła ani zastrzeżenia.
+Przy każdym wpisie podaj w nawiasie liczbę znaków — dokładną daje podgląd wpisu na X (`SKILL.md` →
+„Podgląd wpisu na X”). Jeśli wpis przekracza limit — skróć słowa autora albo zaproponuj podział na dwa
+wpisy; nie wyrzucaj po cichu źródła ani zastrzeżenia. Nagłówki `## Wpis n/N`, `## Propozycja grafiki`
+i `## Dla redakcji` muszą mieć takie brzmienie — po nich podgląd rozpoznaje części pliku.

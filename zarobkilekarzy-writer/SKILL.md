@@ -138,7 +138,24 @@ Inny wzór układu: `--wzor https://zarobkilekarzy.pl/<adres artykułu>/`.
 W podglądzie luki (`[ŹRÓDŁO?]`, `[DO SPRAWDZENIA]`, `[PYTANIE]`) są na żółto, przypis bez definicji ma
 czerwoną ramkę, „Propozycje ilustracji” są w ramce, a „Dla redakcji” — w pasku u góry. Komunikaty skryptu
 (brakujące pola, za dużo punktów „W skrócie”) przekaż autorowi. Podgląd odświeżaj po większych zmianach.
-Plik `.podglad.html` służy tylko autorowi — nie dołącza się go do maila. Dla wpisów na X podglądu nie ma.
+Plik `.podglad.html` służy tylko autorowi — nie dołącza się go do maila.
+
+### Podgląd wpisu na X
+
+Gdy powstanie plik wpisu (format B), zaproponuj podgląd — autor zobaczy wpis albo wątek tak, jak na osi
+czasu X na koncie @ZarobkiLekarzy, w trybie jasnym i ciemnym. Tak samo jak przy artykule: wersja w Node
+albo w Pythonie, uruchom tę, która działa:
+
+```sh
+node <katalog tego skilla>/scripts/podglad-x.mjs x-<temat>.md
+python3 <katalog tego skilla>/scripts/podglad-x.py x-<temat>.md
+```
+
+Skrypt zapisuje `x-<temat>.podglad.html` obok pliku. Pod każdym wpisem jest licznik znaków liczony jak na X
+(link = 23 znaki, emoji = 2) — wpisz te liczby w nagłówki `## Wpis n/N (xxx/280)`. Link do
+zarobkilekarzy.pl dostaje kartę z obrazkiem ze strony, jak na X; „Propozycja grafiki” jest w ramce
+w pierwszym wpisie. Ostrzeżenia skryptu (za długi wpis, wykrzyknik, oznaczenie `@konta`, liczba bez linku)
+przekaż autorowi i popraw razem z nim — skracając jego słowa, nie dopisując nowych.
 
 ### Krok 6. Kontrola
 
