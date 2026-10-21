@@ -92,6 +92,8 @@ publikuje. Zasada „każda teza ma źródło” obowiązuje tak samo jak w arty
 - pierwszy wpis musi działać sam — ktoś przeczyta tylko jego;
 - 1 wpis = 1 myśl; liczba z jednostką i okresem;
 - źródła każdego wpisu w podkładce, z numerem wpisu, którego dotyczą;
+- wolno linkować do tekstu na zarobkilekarzy.pl (X pokaże wtedy kartę z obrazkiem strony) — to zaproszenie
+  do lektury, nie źródło; źródło liczby i tak idzie do podkładki;
 - bez oznaczania osób (`@nazwa`), bez nazwisk, bez wykrzykników i bez „🚨”;
 - grafika — tylko opis propozycji (co pokazać, dane, źródło), wykonuje ją redakcja.
 
